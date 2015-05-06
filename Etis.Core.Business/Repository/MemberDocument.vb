@@ -12,7 +12,7 @@
         End Try
     End Function
 
-    Public Function GetSalesList(MemberID As Integer) As IEnumerable(Of Members.Document) Implements IMemberDocument.GetSalesList
+    Public Function GetSalesList(MemberID As Integer, Optional Page As Integer = 1) As IEnumerable(Of Members.Document) Implements IMemberDocument.GetSalesList
         Try
             Using dat As New Data.MemberDocument
                 Return dat.GetSalesList(MemberID)

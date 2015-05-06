@@ -3,7 +3,7 @@
 
     ' Sales
     Function GetSalesRecords(MemberID As Integer, Optional CurrentPage As Integer = 1, Optional Search As String = "") As Entities.Members.DocumentVM
-    Function GetSalesList(MemberID As Integer) As IEnumerable(Of Entities.Members.Document)
+    Function GetSalesList(MemberID As Integer, Optional Page As Integer = 1) As IEnumerable(Of Entities.Members.Document)
     Function GetSalesRecord(MemberID As Integer, id As Integer) As Entities.Members.Document
     Function AddSalesRecord(p As Entities.Members.Document) As Entities.Status
     Function EditSalesRecord(p As Entities.Members.Document) As Entities.Status

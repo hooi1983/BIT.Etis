@@ -61,16 +61,23 @@
         End Try
     End Function
 
-    Public Function GetSalesList(MemberID As Integer) As IEnumerable(Of Members.Document) Implements IMemberDocument.GetSalesList
+    Public Function GetSalesList(MemberID As Integer, Optional Page As Integer = 1) As IEnumerable(Of Members.Document) Implements IMemberDocument.GetSalesList
+        Dim PageSize As Integer = 10
+
         Try
             Using db As New DbContext
                 Return db.Database.SqlQuery(Of Members.Document)(
                     "select MemberDocumentID, MemberID, MemberPartnerID, CurrencyID, TransactionTypeID, TransactionTypeSubID, DocumentType, DocumentNo, DocumentDate, DueDate, PaymentDate, " +
                     "Ppn, GrandTotalAmount, VatTotalAmount, TotalAmount " +
                     "from tblMemberDocument " +
-                    "where MemberID = @MemberID and DocumentType = @DocumentType",
+                    "where MemberID = @MemberID and DocumentType = @DocumentType " +
+                    "order by MemberDocumentID " +
+                    "offset @Offset rows " +
+                    "fetch next @Fetch rows only",
                     New SqlParameter("@MemberID", MemberID),
-                    New SqlParameter("@DocumentType", SalesType)
+                    New SqlParameter("@DocumentType", SalesType),
+                    New SqlParameter("@Offset", (Page - 1) * PageSize),
+                    New SqlParameter("@Fetch", PageSize)
                 ).ToList
             End Using
         Catch ex As Exception
